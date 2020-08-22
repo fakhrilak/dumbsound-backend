@@ -24,13 +24,5 @@
     "concurrently": "^5.2.0",
     "nodemon": "^2.0.4",
     "sequelize-cli": "^5.5.1"
-  },
-  "production":{
-    "use_env_variable": "DATABASE_URL",
-    "dialect": "postgres",
-    "protocol":"postgres",
-    "dialectOption":{
-      "ssl":true
-    }
   }
 }
