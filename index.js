@@ -1,20 +1,25 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const express = require("express");
-const router = require("./routes");
+const express = require('express');
+const router = require('./routes');
 const app = express();
 const port = process.env.PORT || 5000;
-const cors = require("cors");
+const cors = require('cors');
+const globalErrorHandler = require('./utils/globalError');
 
 app.use(cors());
 
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static('uploads'));
 
-app.use("/api/v1", router);
+app.use('/api/v1', router);
 
-app.listen(port, () =>
-  console.log(`Server is running at http://localhost:${port}`)
-);
+// ~~~~~~~~~~~~~~ Unhandled Route ~~~~~~~~~~~~~~
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find route ${req.originalUrl}`, 404));
+});
 
-// SECRET_KEY = asal2ajacuy
+// ~~~~~~~~~~~~~~ Error Handler Middleware ~~~~~~~~~~~~~~
+app.use(globalErrorHandler);
+
+app.listen(port, () => console.log(`Server is running at http://localhost:${port}`));
